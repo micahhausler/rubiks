@@ -67,58 +67,46 @@ func (c *Cube) printRows(rows [][]string) {
 	}
 }
 
-func (c *Cube) rightColors() [][]string {
-	rows := [][]string{}
+func (c *Cube) rightColors() [][]Color {
+	rows := [][]Color{}
 	x := 2
 	for y := size; y > 0; y-- {
-		row := []string{}
+		row := []Color{}
 		for z := 0; z < size; z++ {
-			row = append(row, c[x][y-1][z].ShowRight())
+			row = append(row, c[x][y-1][z].XColor)
 		}
 		rows = append(rows, row)
 	}
 	return rows
 }
 
-func (c *Cube) ShowRight() {
-	c.printRows(c.rightColors())
-}
-
-func (c *Cube) frontColors() [][]string {
-	rows := [][]string{}
+func (c *Cube) frontColors() [][]Color {
+	rows := [][]Color{}
 	z := 0
 	for y := size; y > 0; y-- {
-		row := []string{}
+		row := []Color{}
 		for x := 0; x < size; x++ {
-			row = append(row, c[x][y-1][z].ShowFront())
+			row = append(row, c[x][y-1][z].NegativeZColor)
 		}
 		rows = append(rows, row)
 	}
 	return rows
 }
 
-func (c *Cube) ShowFront() {
-	c.printRows(c.frontColors())
-}
-
-func (c *Cube) topColors() [][]string {
-	rows := [][]string{}
+func (c *Cube) topColors() [][]Color {
+	rows := [][]Color{}
 	y := 2
 	for z := size - 1; z > -1; z-- {
-		row := []string{}
+		row := []Color{}
 		for x := 0; x < size; x++ {
-			row = append(row, c[x][y][z].ShowTop())
+			row = append(row, c[x][y][z].YColor)
 		}
 		rows = append(rows, row)
 	}
 	return rows
 }
 
-func (c *Cube) ShowTop() {
-	c.printRows(c.frontColors())
-}
-
-func (c *Cube) ShowLeft() {
+func (c *Cube) showLeft() {
 	x := 0
 	for y := size; y > 0; y-- {
 		row := []string{}
@@ -129,18 +117,19 @@ func (c *Cube) ShowLeft() {
 	}
 }
 
-func ShowColors() {}
 
 func (c *Cube) ShowCubeTR() {
 	tmplData := `
-       {{ index .topColors 0 0 }} {{ index .topColors 0 1}} {{ index .topColors 0 2}}
-    {{ index .topColors 1 0}} {{ index .topColors 1 1}} {{ index .topColors 1 2}}    {{ index .rightColors 0 2 }}
- {{ index .topColors 2 0}} {{ index .topColors 2 1}} {{ index .topColors 2 2}}    {{ index .rightColors 0 1 }}  {{ index .rightColors 1 2}}
-{{ index .frontColors 0 0 }} {{ index .frontColors 0 1 }} {{ index .frontColors 0 2 }}  {{ index .rightColors 0 0 }}  {{ index .rightColors 1 1 }}  {{ index .rightColors 2 2 }}
-{{ index .frontColors 1 0 }} {{ index .frontColors 1 1 }} {{ index .frontColors 1 2 }}  {{ index .rightColors 1 0 }}  {{ index .rightColors 2 1 }}
-{{ index .frontColors 2 0 }} {{ index .frontColors 2 1 }} {{ index .frontColors 2 2 }}  {{ index .rightColors 2 0 }}
+       {{ index .topColors 0 0 | showColor }} {{ index .topColors 0 1 | showColor }} {{ index .topColors 0 2 | showColor }}
+    {{ index .topColors 1 0 | showColor }} {{ index .topColors 1 1 | showColor }} {{ index .topColors 1 2 | showColor }}    {{ index .rightColors 0 2 | showColor }}
+ {{ index .topColors 2 0 | showColor }} {{ index .topColors 2 1 | showColor }} {{ index .topColors 2 2 | showColor }}    {{ index .rightColors 0 1 | showColor }}  {{ index .rightColors 1 2 | showColor }}
+{{ index .frontColors 0 0 | showColor }} {{ index .frontColors 0 1 | showColor }} {{ index .frontColors 0 2 | showColor }}  {{ index .rightColors 0 0 | showColor }}  {{ index .rightColors 1 1 | showColor }}  {{ index .rightColors 2 2 | showColor }}
+{{ index .frontColors 1 0 | showColor }} {{ index .frontColors 1 1 | showColor }} {{ index .frontColors 1 2 | showColor }}  {{ index .rightColors 1 0 | showColor }}  {{ index .rightColors 2 1 | showColor }}
+{{ index .frontColors 2 0 | showColor }} {{ index .frontColors 2 1 | showColor }} {{ index .frontColors 2 2 | showColor }}  {{ index .rightColors 2 0 | showColor }}
 `
-	tmpl, err := template.New("test").Parse(tmplData)
+	tmpl, err := template.New("test").Funcs(template.FuncMap{
+		"showColor":  showColor,
+	}).Parse(tmplData)
 	if err != nil {
 		panic(err)
 	}

@@ -8,6 +8,10 @@ import (
 
 type Color int
 
+func (c Color) String() string {
+	return showColor(c)
+}
+
 const (
 	Black  Color = iota
 	Red          = iota
@@ -17,6 +21,7 @@ const (
 	Green        = iota
 	Yellow       = iota
 )
+
 
 var ColorMap map[Color]string
 

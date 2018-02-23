@@ -9,32 +9,32 @@ import (
 
 
 func main() {
-	cube := cube.NewCube()
+	c := cube.NewCube()
 
 	fmt.Println("Show cube corner")
-	cube.ShowCubeTR()
+	c.ShowCubeTR()
 
 	fmt.Println()
 	fmt.Println("Mixed Up")
-	cube.MixUp()
-	cube.ShowCubeTR()
+	c.MixUp()
+	c.ShowCubeTR()
 	fmt.Println()
 
 	fmt.Println("Alligned white to front")
-	cube = solver.AlignWhiteCenter(cube)
-	cube.ShowCubeTR()
+	c = solver.AlignWhiteCenter(c)
+	c.ShowCubeTR()
 
 	fmt.Println("Alligned Blue to right")
-	cube = solver.AlignBlueCenter(cube)
-	cube.ShowCubeTR()
+	c = solver.AlignBlueCenter(c)
+	c.ShowCubeTR()
 
 	fmt.Println("Put white on front somewhere")
-	cube.Top().Top().RightInverted()
-	cube.ShowCubeTR()
+	c.Top().Top().RightInverted()
+	c.ShowCubeTR()
 
 	fmt.Println("Put white on bottom")
-	cube = solver.AllignWhiteCross(cube)
-	cube.ShowCubeTR()
+	c = solver.AlignFrontCross(c, cube.White)
+	c.ShowCubeTR()
 
 
 
